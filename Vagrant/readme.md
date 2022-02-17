@@ -1,0 +1,71 @@
+1. Create Vagrant box
+    - Import ubuntu-server-20.04.ova Vm template
+    - Configurate NAT network SSH - host: 2225, guest: 22
+    - Add/Load VBoxGusetAdditions.iso from Storage Devices configurations
+    - Run the machine
+    - Opened bash terminal from the host machine and open SHH - 'sudo ssh -p 2225 vagrant@localhost'
+    - Update the list of availabe packages and their versions and Upgrade all installed packages - 'apt-get update && apt-get upgrade' 
+    - Check if the matching kernel headers for this kernel version are already installed - 'ls -l /usr/src/linux-headers-$(uname -r)'
+    - Install "libelf-dev" Package, with -y flag for quickly install the packages and dependencies - 'sudo apt-get install -y libelf-dev'
+    - Mount the VirtualBox Guest Additions media - 'sudo mount /dev/sr0 /mnt'
+    - Install VirtualBox Guest Additions - 'sudo /mnt/VBoxLinuxAdditions.run'
+    - Add the vagrant user to the vboxsf group - 'sudo usermod -aG vboxsf vagrant'
+    - Check if the GRUB waiting time is set to 0 - for our ubuntu machine is set to 0 by default
+        - If no set it - 'sudo vi /etc/default/grub' ->> set timeout on 0 ->> esc + :x + enter ->> 'sudo grub2-mkconfig -o /boot/grub2/grub.cfg'
+    - Add the vagrant user to the sudoers list and allow it to sudo without entering password (vagrant ALL=(ALL) NOPASSWD:ALL) - 'echo "vagrant ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/vagrant'
+    - Install the vagrant insecure key
+        - Create dir with permissions for read, write, & execute only for owner - 'mkdir -m 0700 -p /home/vagrant/.ssh'
+        - 'wget --no-check-certificate \https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub \-O /home/vagrant/.ssh/authorized_key'
+        - Sets permissions so that, the owner can read, can write and can't execute - 'chmod 0600 /home/vagrant/.ssh/authorized_keys'
+    - Clean up the APT cache - 'sudo apt-get clean all'
+    - Align the hard disc 
+        - Create empty file with max machine size - 'sudo dd if=/dev/zero of=/EMPTY bs=1M status=progress'
+        - Remove the created empty file - 'sudo rm -f /EMPTY'
+    - Reboot the VM - 'sudo reboot'
+    - Eject the additions media that still attached to the machine - in Storage settings remove VBoxGusetAdditions.iso attachment and leave it empty
+    - Start the machine again
+    - Create a folder on the host machine to host the box - 'mkdir -p /home/$USER/Vagrant/M1/ubuntu && cd /home/$USER/Vagrant/M1/ubuntu'
+    - Build the box - 'vagrant package --base ubuntu-server-20.04'
+    - Add the box to the local catalog - 'vagrant box add vubuntu package.box'
+    - Create a configuration based on the local box - 'vagrant init vubuntu'
+    - Power on the machine and connect to it
+        - 'vagrant up'
+        - 'vagrant ssh'
+    - Explore what's inside the machine and close the SSH session, then turn off and delete the machine 
+        - 'exit'
+        - 'vagrant destroy --force'
+    - Publishing my box to Vagrant Cloud at 'https://app.vagrantup.com/ivelin1936'
+2. Create vagrant file
+    - WEB machine with box from my vagrant cloud "ivelin1936/VUbuntu-20-04-server"
+        - IP 192.168.56.100
+        - Add IPs with host names to the hosts
+        - Installing software
+            - apache2 web server
+            - Manage firelow ufw
+                - open HTTP 80/tcp
+                - open HTTPS 443/tcp
+            - Install php
+            - Install git
+            - Clone the application from git repository
+            - Copy 'web' files into '/var/www/html'
+            - Load DB configurations inserted into config.php
+            - Remove the folder with cloned project
+    - DB machine with box from my vagrant cloud "ivelin1936/VUbuntu-20-04-server"
+        - IP 192.168.56.101
+        - Add IPs with host names to the hosts
+        - Installing software
+            - mariadb server
+            - Manage firelow ufw
+                - open 3306/tcp
+                - OR disable the firewall (by default will be disabled)
+            - Install git
+            - Clone the application from git repository
+            - Execute *.sql file for creating the DB, table and insert data into it
+            - Remove the folder with cloned project
+            - Configurating MariaDB Remote Access
+                - Bind address from 127.0.0.1 to 0.0.0.0
+            - Restart MariaDB service
+
+
+
+

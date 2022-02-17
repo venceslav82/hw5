@@ -6,12 +6,11 @@ The main goal of the course is to present some of the most commonly used tools u
 
 ## Containerization, CI/CD & Monitoring
 ### Acquired skills
-1. Installing and working with ELK Stack
-2. Installing and working with Docker
-3. Installing and working with Jenkins
-4. Working with version control systems (git)
-5. Installing and working with Prometheus and Grafana
-
+ - Installing and working with ELK Stack
+ - Installing and working with Docker
+ - Installing and working with Jenkins
+ - Working with version control systems (git)
+ - Installing and working with Prometheus and Grafana
 
 ## Infrastructure & Configuration Management
 ### Acquired skills

@@ -15,5 +15,3 @@ docker compose up -d
 
 echo "### Listing docker compose objects.."
 docker compose ps
-
-

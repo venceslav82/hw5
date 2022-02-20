@@ -1,0 +1,40 @@
+Vagrant.configure("2") do |config|
+
+    config.vm.define "docker1" do |docker1|
+        docker1.vm.box="ivelin1936/VCentos"
+        docker1.vm.hostname = "docker1.ex.ivo"
+        docker1.vm.network "private_network", ip: "192.168.56.11"
+        docker1.vm.provision "shell", path: "docker-setup.sh"
+        docker1.vm.provision "shell", path: "other-steps.sh"
+        docker1.vm.provider :virtualbox do |vb|
+            vb.customize ["modifyvm", :id, "--memory", "1536"]
+            vb.name = "Swarm_do1_HOST"
+        end
+    end
+	
+    config.vm.define "docker2" do |docker2|
+        docker2.vm.box="ivelin1936/VCentos"
+        docker2.vm.hostname = "docker2.ex.ivo"
+        docker2.vm.network "private_network", ip: "192.168.56.12"
+        docker2.vm.provision "shell", path: "docker-setup.sh"
+        docker2.vm.provision "shell", path: "other-steps.sh"
+        docker2.vm.provider :virtualbox do |vb|
+            vb.customize ["modifyvm", :id, "--memory", "1536"]
+            vb.name = "Swarm_do2_HOST"
+        end
+    end
+	
+    config.vm.define "docker3" do |docker3|
+        docker3.vm.box="ivelin1936/VCentos"
+        docker3.vm.hostname = "docker3.ex.ivo"
+        docker3.vm.network "private_network", ip: "192.168.56.13"
+        docker3.vm.provision "shell", path: "docker-setup.sh"
+        docker3.vm.provision "shell", path: "other-steps.sh"
+        docker3.vm.provider :virtualbox do |vb|
+            vb.customize ["modifyvm", :id, "--memory", "1536"]
+            vb.name = "Swarm_do3_HOST"
+        end
+    end
+  
+  end
+  

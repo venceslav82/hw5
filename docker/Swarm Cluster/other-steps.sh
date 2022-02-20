@@ -12,14 +12,17 @@ sudo dnf install -y jq tree git nano
 #sudo systemctl disable --now firewalld
 # OR
 echo "### Open ports: Firewall - swarm!2377/tcp for cluster management communications, 7946/tcp and 7946/udp for communication among nodes and 4789/udp for overlay network traffic."
-sudo firewall-cmd --add-port=2377/tcp --permanent
-sudo firewall-cmd --add-port=4789/udp --permanent
-sudo firewall-cmd --add-port=7946/tcp --permanent
-sudo firewall-cmd --add-port=7946/udp --permanent
+sudo systemctl start firewalld
+firewall-cmd --add-port=2377/tcp --permanent
+firewall-cmd --add-port=4789/udp --permanent
+firewall-cmd --add-port=7946/tcp --permanent
+firewall-cmd --add-port=7946/udp --permanent
 
 echo "### Firewall - open port 8080 ..."
-# sudo systemctl start firewalld
-sudo firewall-cmd --permanent --add-port=8080/tcp
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --reload
+firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+
+systemctl stop firewalld
+systemctl disable --now firewalld

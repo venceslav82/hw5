@@ -6,6 +6,7 @@ The main goal of the course is to present some of the most commonly used tools u
 
 ## Containerization, CI/CD & Monitoring
 ### Acquired skills
+ - Installing and working with Vagrant
  - Installing and working with ELK Stack
  - Installing and working with Docker
  - Installing and working with Jenkins

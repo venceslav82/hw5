@@ -1,0 +1,17 @@
+Should we want, we can start the service again but this time in detached mode with
+docker compose up -d
+
+And then check the list of working containers
+docker container ls
+
+We can use the following to get the list of services
+docker compose ps
+
+And this one to see the list of processes by service
+docker compose top
+
+Should we want to see the logs (as we saw them when our session was attached), we can use
+docker compose logs
+
+Let’s stop the service
+docker compose down

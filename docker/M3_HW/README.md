@@ -13,3 +13,5 @@ Note that the compose file may be named either docker-compose.yml or docker-comp
 
 ### Target Infrastructure
 After you fulfil the assignment tasks, your infrastructure may look like:
+
+![alt text](https://github.com/ivelin1936/DevOps/blob/main/docker/M3_HW/infrastructure.png?raw=true)

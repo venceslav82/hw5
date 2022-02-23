@@ -1,6 +1,6 @@
-### Homework M3: Advanced Docker
+## Homework M3: Advanced Docker
 
-## Assignment
+### Assignment
 You must execute the following set of tasks:
 1. Try to create a Vagrantfile which creates a Docker Swarm cluster with 3 nodes. The whole process should be automated as much as possible. Ideally, the whole cluster should be created with executing just the vagrant up command
 2. Create own docker-compose.yml file with:
@@ -11,6 +11,5 @@ You must execute the following set of tasks:
 It is not required both tasks to be automated and executed together. Instead, at first, prepare the Vagrantfile and spin up the environment. Then create the docker-compose.yml file, upload it on the cluster and execute it
 Note that the compose file may be named either docker-compose.yml or docker-compose.yaml
 
-## Target Infrastructure
+### Target Infrastructure
 After you fulfil the assignment tasks, your infrastructure may look like:
-

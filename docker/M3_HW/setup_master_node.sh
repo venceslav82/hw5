@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "### Restarting docker..."
+sudo systemctl restart docker
+
 echo "### Creating a new bridge network..."
 docker network create --driver bridge app-network
 
@@ -11,6 +14,7 @@ docker-compose version
 
 echo "### Enter into the project folder..."
 cd bgapp
+pwd
 
 #echo "### Docker Hub login.."
 #cat ~/my_password.txt | docker login --username foo --password-stdin
@@ -24,6 +28,12 @@ cd bgapp
 #echo "### Pushing images into the Docker Hub..."
 #docker image push ivelin1936/bgapp-hw-web
 #docker image push ivelin1936/bgapp-hw-db
+
+echo "Initialize it as the first node of the cluster"
+docker swarm init --advertise-addr 192.168.56.11
+
+echo "Asking for the swarm cluster token..."
+docker swarm join-token -q worker
 
 FILE=docker-compose-swarm.yaml
 if [ -f "docker-compose-swarm.yaml" ]; then

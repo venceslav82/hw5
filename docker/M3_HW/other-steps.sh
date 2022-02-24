@@ -26,3 +26,6 @@ firewall-cmd --reload
 
 systemctl stop firewalld
 systemctl disable --now firewalld
+
+echo "### Cloning the project..."
+git clone https://github.com/ivelin1936/bgapp.git

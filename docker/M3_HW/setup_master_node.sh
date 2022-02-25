@@ -63,3 +63,8 @@ docker stack services bgapp
 
 echo "### Check information about the stack:"
 docker stack ps bgapp
+
+echo "### Saving the cluster's token into the 'clueter_tocker.txt' file..."
+echo $(docker swarm join-token -q worker) >> clueter_tocker.txt
+#echo "### Saving the cluster's token into the docker config.."
+#docker config create cluster_token clueter_tocker.txt

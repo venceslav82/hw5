@@ -6,11 +6,19 @@ sudo systemctl restart docker
 echo "### Creating a new bridge network..."
 docker network create --driver bridge app-network
 
-echo "### Installing Docker compose..."
+echo "### Installing Docker compose (standalone)..."
 curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > /tmp/docker-compose && chmod +x /tmp/docker-compose && sudo cp /tmp/docker-compose /usr/local/bin/docker-compose
 
-echo "### Checking docker compose version..."
+echo "### Checking docker compose (standalone) version..."
 docker-compose version
+
+echo "### Installing Docker compose (integrated)..."
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+echo "### Checking docker compose (integrated) version..."
+docker compose version
 
 echo "### Enter into the project folder..."
 cd bgapp

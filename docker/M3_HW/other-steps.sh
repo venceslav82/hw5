@@ -24,8 +24,8 @@ firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 firewall-cmd --reload
 
-systemctl stop firewalld
-systemctl disable --now firewalld
+sudo systemctl stop firewalld
+sudo systemctl disable --now firewalld
 
 echo "### Cloning the project..."
 git clone https://github.com/ivelin1936/bgapp.git

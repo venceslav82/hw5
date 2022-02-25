@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
         docker1.vm.provision "shell", path: "setup_master_node.sh"
         docker1.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1536"]
-            vb.name = "SDO1_HOST"
+            vb.name = "HOST_CLUSTER1"
         end
     end
 	
@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
         docker2.vm.provision "shell", path: "other-steps.sh"
         docker2.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1536"]
-            vb.name = "SDO2_HOST"
+            vb.name = "HOST_CLUSTER2"
         end
     end
 	
@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
         docker3.vm.provision "shell", path: "other-steps.sh"
         docker3.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1536"]
-            vb.name = "SDO3_HOST"
+            vb.name = "HOST_CLUSTER3"
         end
     end
   

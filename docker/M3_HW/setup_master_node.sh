@@ -1,4 +1,5 @@
 #!/bin/bash
+source ./cfg.txt
 
 echo "### Restarting docker..."
 sudo systemctl restart docker
@@ -71,12 +72,14 @@ echo "### Check information about the stack:"
 docker stack ps bgapp
 
 echo "### Saving the cluster's token into the 'clueter_tocker.txt' file..."
-echo $(docker swarm join-token -q worker) >> cluster_tocker.txt
+echo $(docker swarm join-token -q worker) > cluster_tocker.txt
 #echo "### Saving the cluster's token into the docker config.."
 #docker config create cluster_token clueter_tocker.txt
 
 echo "### Pushing created cluster_token.txt file to github :::"
+sudo git config --global user.email "$USERNAME"
+sudo git config --global user.email "$EMAIL"
 git add .
 git commit -m 'Add/Update swarm cluster token...'
-git push https://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@github.com/ivelin1936/bgapp.git
+sudo git push https://$TOKEN@$SOURCE/$USERNAME/bgapp.git
 

@@ -5,6 +5,7 @@ FILE=cluster_tocker.txt
 if [ -f "$FILE" ]; then
     echo "### Joining the node as a worker the the swarm cluster..."
     TOKEN=$(head -n 1 $FILE)
+    echo "Cluster token: $TOKEN"
     docker swarm join --token $TOKEN --advertise-addr 192.168.56.12 192.168.56.11:2377
 else 
     echo "Not found cluster's token! $FILE wasn't found..."

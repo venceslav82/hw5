@@ -1,0 +1,4 @@
+export USERNAME=ivelin1936
+export EMAIL=ivelin_1936@abv.bg
+export TOKEN=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
+export SOURCE=github.com

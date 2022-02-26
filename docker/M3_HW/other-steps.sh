@@ -1,4 +1,5 @@
 #!/bin/bash
+source ./cfg.txt
 
 echo "* Add hosts ..."
 echo "192.168.56.11 docker1.hw.ivo docker1" >> /etc/hosts
@@ -28,4 +29,4 @@ sudo systemctl stop firewalld
 sudo systemctl disable --now firewalld
 
 echo "### Cloning the project..."
-git clone https://github.com/ivelin1936/bgapp.git
+git clone https://$SOURCE/$USERNAME/$REPO.git

@@ -1,13 +1,17 @@
 #!/bin/bash
+source ./cfg.txt
 
-echo "### Try to join '192.168.56.12' as a worker to the swarm cluster 192.168.56.11..."
-FILE=cluster_tocker.txt
-if [ -f "$FILE" ]; then
+if [ "$(PWD##*/)" != "$REPO" ]; then 
+    [ -d "$REPO" ] && cd $REPO || pwd
+fi
+
+echo "### Try to join '$SECOND_NODE_IP' as a worker to the swarm cluster $FIRST_NODE_IP..."
+if [ -f "$CLUSTER_TOKEN_FILE" ]; then
     echo "### Joining the node as a worker the the swarm cluster..."
-    TOKEN=$(head -n 1 $FILE)
-    echo "Cluster token: $TOKEN"
-    docker swarm join --token $TOKEN --advertise-addr 192.168.56.12 192.168.56.11:2377
+    CLUSTER_TOKEN=$(head -n 1 $CLUSTER_TOKEN_FILE)
+    echo "Cluster token: $CLUSTER_TOKEN"
+    docker swarm join --token $CLUSTER_TOKEN --advertise-addr $SECOND_NODE_IP $FIRST_NODE_IP:$CLUSTER_PORT
 else 
-    echo "Not found cluster's token! $FILE wasn't found..."
+    echo "Not found cluster's token! $CLUSTER_TOKEN_FILE wasn't found..."
 fi
 

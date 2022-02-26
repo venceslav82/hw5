@@ -27,9 +27,10 @@ chmod +x ~/.docker/cli-plugins/docker-compose
 echo "### Checking docker compose (integrated) version..."
 docker compose version
 
-echo "### Enter into the project folder..."
-cd bgapp
-pwd
+echo "### Try Enter into the project folder..."
+if [ "$(PWD##*/)" != "$REPO" ]; then 
+    [ -d "$REPO" ] && cd $REPO || pwd
+fi
 
 #echo "### Docker Hub login.."
 #cat ~/my_password.txt | docker login --username foo --password-stdin
@@ -45,18 +46,17 @@ pwd
 #docker image push ivelin1936/bgapp-hw-db
 
 echo "Initialize it as the first node of the cluster"
-docker swarm init --advertise-addr 192.168.56.11
+docker swarm init --advertise-addr $FIRST_NODE_IP
 
 echo "Asking for the swarm cluster token..."
 docker swarm join-token -q worker
 
-FILE=docker-compose-swarm.yaml
-if [ -f "docker-compose-swarm.yaml" ]; then
+if [ -f "$COMPOSE_SWARM_YAML" ]; then
     echo "### Starting Swarm stack..."
-    docker stack deploy -c <(head -n 1 docker-compose-swarm.yaml ; docker compose -f docker-compose-swarm.yaml config) bgapp
-elif [ -f "docker-compose.yaml" ]; then
+    docker stack deploy -c <(head -n 1 $COMPOSE_SWARM_YAML ; docker compose -f $COMPOSE_SWARM_YAML config) $SERVICE_NAME
+elif [ -f "$COMPOSE_YAML" ]; then
     echo "### Starting Swarm stack..."
-    docker stack deploy -c <(head -n 1 docker-compose.yaml ; docker compose -f docker-compose.yaml config) bgapp
+    docker stack deploy -c <(head -n 1 $COMPOSE_YAML ; docker compose -f $COMPOSE_YAML config) $SERVICE_NAME
 else 
     echo "There is no docker compose yaml file...."
 fi
@@ -65,14 +65,14 @@ fi
 echo "### List available stacks:"
 docker stack ls
 
-echo "### List the services in the bgapp stack:"
-docker stack services bgapp
+echo "### List the services in the $SERVICE_NAME stack:"
+docker stack services $SERVICE_NAME
 
 echo "### Check information about the stack:"
-docker stack ps bgapp
+docker stack ps $SERVICE_NAME
 
 echo "### Saving the cluster's token into the 'clueter_tocker.txt' file..."
-echo $(docker swarm join-token -q worker) > cluster_tocker.txt
+echo $(docker swarm join-token -q worker) > $CLUSTER_TOKEN_FILE
 #echo "### Saving the cluster's token into the docker config.."
 #docker config create cluster_token clueter_tocker.txt
 
@@ -81,5 +81,5 @@ sudo git config --global user.email "$USERNAME"
 sudo git config --global user.email "$EMAIL"
 git add .
 git commit -m 'Add/Update swarm cluster token...'
-sudo git push https://$TOKEN@$SOURCE/$USERNAME/bgapp.git
+sudo git push https://$TOKEN@$SOURCE/$USERNAME/$REPO.git
 

@@ -74,3 +74,9 @@ echo "### Saving the cluster's token into the 'clueter_tocker.txt' file..."
 echo $(docker swarm join-token -q worker) >> cluster_tocker.txt
 #echo "### Saving the cluster's token into the docker config.."
 #docker config create cluster_token clueter_tocker.txt
+
+echo "### Pushing created cluster_token.txt file to github :::"
+git add .
+git commit -m 'Add/Update swarm cluster token...'
+git push https://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@github.com/ivelin1936/bgapp.git
+

@@ -78,5 +78,5 @@ echo $(docker swarm join-token -q worker) >> cluster_tocker.txt
 echo "### Pushing created cluster_token.txt file to github :::"
 git add .
 git commit -m 'Add/Update swarm cluster token...'
-git push https://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@github.com/ivelin1936/bgapp.git
+git push https://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@github.com/ivelin1936/bgapp.git
 

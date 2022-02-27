@@ -1,5 +1,4 @@
 #!/bin/bash
-source ./cfg.txt
 
 echo "* Add hosts ..."
 echo "192.168.56.11 docker1.hw.ivo docker1" >> /etc/hosts
@@ -12,7 +11,7 @@ sudo dnf install -y jq tree git nano
 #echo "### Disable the firewall"
 #sudo systemctl disable --now firewalld
 # OR
-echo "### Open ports: Firewall - swarm!2377/tcp for cluster management communications, 7946/tcp and 7946/udp for communication among nodes and 4789/udp for overlay network traffic."
+echo "### Open ports: Firewall - swarm! 2377/tcp for cluster management communications, 7946/tcp and 7946/udp for communication among nodes and 4789/udp for overlay network traffic."
 sudo systemctl start firewalld
 firewall-cmd --add-port=2377/tcp --permanent
 firewall-cmd --add-port=4789/udp --permanent
@@ -28,5 +27,5 @@ firewall-cmd --reload
 sudo systemctl stop firewalld
 sudo systemctl disable --now firewalld
 
-echo "### Cloning the project..."
+echo "### Cloning the project ' https://$SOURCE/$USERNAME/$REPO.git'..."
 git clone https://$SOURCE/$USERNAME/$REPO.git

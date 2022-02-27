@@ -4,6 +4,8 @@ Vagrant.configure("2") do |config|
         docker1.vm.box="ivelin1936/VCentos"
         docker1.vm.hostname = "docker1.hw.ivo"
         docker1.vm.network "private_network", ip: "192.168.56.11"
+        docker1.vm.synced_folder ".", "/node"
+        docker1.vm.provision "shell", path: "env_cfg.sh"
         docker1.vm.provision "shell", path: "docker-setup.sh"
         docker1.vm.provision "shell", path: "other-steps.sh"
         docker1.vm.provision "shell", path: "setup_master_node.sh"
@@ -17,9 +19,11 @@ Vagrant.configure("2") do |config|
         docker2.vm.box="ivelin1936/VCentos"
         docker2.vm.hostname = "docker2.hw.ivo"
         docker2.vm.network "private_network", ip: "192.168.56.12"
+        docker2.vm.synced_folder ".", "/node"
+        docker2.vm.provision "shell", path: "env_cfg.sh"
         docker2.vm.provision "shell", path: "docker-setup.sh"
         docker2.vm.provision "shell", path: "other-steps.sh"
-        docker2.vm.provision "shell", path: "setup_worker_host2.sh"
+        docker2.vm.provision "shell", path: "setup_worker_node.sh"
         docker2.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1536"]
             vb.name = "HOST_CLUSTER2"
@@ -30,9 +34,11 @@ Vagrant.configure("2") do |config|
         docker3.vm.box="ivelin1936/VCentos"
         docker3.vm.hostname = "docker3.hw.ivo"
         docker3.vm.network "private_network", ip: "192.168.56.13"
+        docker3.vm.synced_folder ".", "/node"
+        docker3.vm.provision "shell", path: "env_cfg.sh"
         docker3.vm.provision "shell", path: "docker-setup.sh"
         docker3.vm.provision "shell", path: "other-steps.sh"
-        docker3.vm.provision "shell", path: "setup_worker_host3.sh"
+        docker3.vm.provision "shell", path: "setup_worker_node.sh"
         docker3.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1536"]
             vb.name = "HOST_CLUSTER3"

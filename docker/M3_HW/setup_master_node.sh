@@ -1,5 +1,4 @@
 #!/bin/bash
-source ./cfg.txt
 
 echo "### Restarting docker..."
 sudo systemctl restart docker
@@ -27,8 +26,8 @@ chmod +x ~/.docker/cli-plugins/docker-compose
 echo "### Checking docker compose (integrated) version..."
 docker compose version
 
-echo "### Try Enter into the project folder..."
-if [ "$(PWD##*/)" != "$REPO" ]; then 
+echo "### Try Enter into the project folder '$REPO'..."
+if [ "$(basename $PWD)" != "$REPO" ]; then 
     [ -d "$REPO" ] && cd $REPO || pwd
 fi
 
@@ -46,7 +45,9 @@ fi
 #docker image push ivelin1936/bgapp-hw-db
 
 echo "Initialize it as the first node of the cluster"
-docker swarm init --advertise-addr $FIRST_NODE_IP
+HOSTNAME_IP=$(hostname -i | awk '{print $2}')
+[ -z "$HOSTNAME_IP" ] && HOSTNAME_IP=$(hostname -i | awk '{print $1}') 
+docker swarm init --advertise-addr $HOSTNAME_IP
 
 echo "Asking for the swarm cluster token..."
 docker swarm join-token -q worker
@@ -76,7 +77,7 @@ echo $(docker swarm join-token -q worker) > $CLUSTER_TOKEN_FILE
 #echo "### Saving the cluster's token into the docker config.."
 #docker config create cluster_token clueter_tocker.txt
 
-echo "### Pushing created cluster_token.txt file to github :::"
+echo "### Pushing created cluster_token.txt file to github '$SOURCE/$USERNAME/$REPO.git':::"
 sudo git config --global user.email "$USERNAME"
 sudo git config --global user.email "$EMAIL"
 git add .

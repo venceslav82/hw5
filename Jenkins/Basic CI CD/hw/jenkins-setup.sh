@@ -7,7 +7,7 @@ echo "### Importing the repository’s key..."
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 
 echo "### Updating/Refreshing repository info and list all available versions:::..."
-sudo dnf update && dnf list --showduplicates jenkins
+sudo dnf update #&& dnf list --showduplicates jenkins
 
 echo "### Installing latest Jenkins version..."
 sudo dnf install -y jenkins

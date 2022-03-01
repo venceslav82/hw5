@@ -25,7 +25,7 @@ if [ "inactive" = "$FIREWALLD_ACTIVE_STATUS" ]; then
     sudo systemctl enable firewalld
 fi
 
-echo "### Firewall - open tcp port 80, 8000, 8080 ..."
+echo "### Firewall - open port 80/tcp, 8000/tcp, 8080/tcp and adding http and https services ..."
 sudo firewall-cmd --permanent --add-port=80/tcp
 sudo firewall-cmd --permanent --add-port=8000/tcp
 sudo firewall-cmd --permanent --add-port=8080/tcp

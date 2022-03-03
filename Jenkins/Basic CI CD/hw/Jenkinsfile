@@ -1,0 +1,62 @@
+pipeline 
+{
+  agent any
+
+  stages 
+  {
+    stage('Clone the project') 
+    {
+      steps 
+      {
+        sh '''#!/bin/bash
+            [ -d "/projects" ] || sudo mkdir -p /projects
+            sudo chown -R jenkins:jenkins /projects
+            cd /projects
+            if [ -d /projects/devops-bgapp ]; then 
+                cd /projects/devops-bgapp
+                git pull https://github.com/ivelin1936/devops-bgapp.git 
+            else
+                git clone https://github.com/ivelin1936/devops-bgapp.git 
+            fi
+          '''
+      }
+    }
+    stage('Build the images')
+    {
+      steps
+      {
+        sh '''#!/bin/bash
+            cd /projects/bgapp
+            
+            sudo docker image rm -f img-bgapp-web || true
+            sudo docker image rm -f img-bgapp-db || true
+            
+            sudo docker image build -t img-bgapp-web --file Dockerfile.web .
+            sudo docker image build -t img-bgapp-db --file Dockerfile.db .
+           '''
+      }
+    }
+    stage('Create a common network')
+    {
+      steps
+      {
+        sh '''#!/bin/bash
+            sudo docker network ls | grep appnet || sudo docker network create appnet
+           '''
+      }
+    }
+    stage('Run the application')
+    {
+      steps
+      {
+        sh '''
+        sudo docker container rm -f web || true
+        sudo docker container run -d --name web --net appnet -p 8282:80 -v /projects/devops-bgapp/web:/var/www/html:ro img-bgapp-web
+        
+        sudo docker container rm -f db || true
+        sudo docker container run -d --name db --net appnet -e MYSQL_ROOT_PASSWORD=12345 img-bgapp-db
+        '''
+      }
+    }
+  }
+} 

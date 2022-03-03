@@ -4,7 +4,7 @@ echo "* Add hosts ..."
 echo "192.168.56.11 jenkins.do1.lab jenkins" >> /etc/hosts
 
 echo "* Install Additional Packages ..."
-sudo dnf install -y jq tree git nano
+sudo dnf install -y jq tree git nano sshpass
 
 #sudo systemctl stop firewalld
 #sudo systemctl disable --now firewalld

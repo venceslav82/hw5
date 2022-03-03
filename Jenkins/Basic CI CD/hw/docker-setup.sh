@@ -22,3 +22,14 @@ sudo docker system info
   
 echo "### Adding sudo user '$USER && vagrant' to the Docker group, to be able to work with docker without the need to use always sudo..."
 sudo usermod -aG docker $USER && usermod -aG docker vagrant
+
+sudo systemctl restart docker
+echo "### Checking docker deamon status..."
+while true ; do
+    sleep 5
+    if [ "$(systemctl is-active docker)" = "active" ]; then 
+        echo "Docker deamon is up! Checking status..."
+        systemctl status docker
+        break
+    fi
+done

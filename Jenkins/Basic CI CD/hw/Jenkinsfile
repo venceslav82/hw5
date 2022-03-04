@@ -1,22 +1,42 @@
-pipeline 
+pipeline
 {
   agent any
+  environment {
+        BASE_DIR = "projects"
+        REPO = "devops-bgapp"
+        SOURCE = "https://github.com/ivelin1936"
+        DO_IMG_WEB = "img-bgapp-web"
+        DO_IMG_DB = "img-bgapp-db"
+        DO_WEB_CONTAINER = "web"
+        DO_DB_CONTAINER = "db"
+        NETWORK_NAME = "appnet"
+        DO_FILE_WEB = "Dockerfile.web"
+        DO_FILE_DB = "Dockerfile.db"
+        DB_CONTAINER_ENV = "MYSQL_ROOT_PASSWORD=12345"
+        DO_WEB_PORT_FORWARDING = "8282:80"
+        DO_WEB_VOLUME = "/projects/devops-bgapp/web:/var/www/html:ro"
+    }
 
-  stages 
+  stages
   {
-    stage('Clone the project') 
+    stage('Clone the project')
     {
-      steps 
+      steps
       {
         sh '''#!/bin/bash
-            [ -d "/projects" ] || sudo mkdir -p /projects
-            sudo chown -R jenkins:jenkins /projects
-            cd /projects
-            if [ -d /projects/devops-bgapp ]; then 
-                cd /projects/devops-bgapp
-                git pull https://github.com/ivelin1936/devops-bgapp.git 
+            if [ -d "/${BASE_DIR}" ]; then
+                sudo mkdir -p "/${BASE_DIR}"
+                sudo chown -R jenkins:jenkins "/${BASE_DIR}"
+            fi
+            if [ "$(basename $PWD)" != "${BASE_DIR}" ]; then
+                cd "/${BASE_DIR}"
+            fi
+
+            if [ -d "/${BASE_DIR}/${REPO}" ]; then
+                cd "/${BASE_DIR}/${REPO}"
+                git pull ${SOURCE}/${REPO}.git
             else
-                git clone https://github.com/ivelin1936/devops-bgapp.git 
+                git clone ${SOURCE}/${REPO}.git
             fi
           '''
       }
@@ -26,13 +46,15 @@ pipeline
       steps
       {
         sh '''#!/bin/bash
-            cd /projects/bgapp
-            
-            sudo docker image rm -f img-bgapp-web || true
-            sudo docker image rm -f img-bgapp-db || true
-            
-            sudo docker image build -t img-bgapp-web --file Dockerfile.web .
-            sudo docker image build -t img-bgapp-db --file Dockerfile.db .
+            if [ "$(basename $PWD)" != "${REPO}" ]; then
+                [ -d "${REPO}" ] && cd ${REPO} || cd "/${BASE_DIR}/${REPO}"
+            fi
+
+            sudo docker image rm -f ${DO_IMG_WEB} || true
+            sudo docker image rm -f ${DO_IMG_DB} || true
+
+            sudo docker image build -t ${DO_IMG_WEB} --file ${DO_FILE_WEB} .
+            sudo docker image build -t ${DO_IMG_DB} --file ${DO_FILE_DB} .
            '''
       }
     }
@@ -41,7 +63,7 @@ pipeline
       steps
       {
         sh '''#!/bin/bash
-            sudo docker network ls | grep appnet || sudo docker network create appnet
+            sudo docker network ls | grep ${NETWORK_NAME} || sudo docker network create ${NETWORK_NAME}
            '''
       }
     }
@@ -50,13 +72,13 @@ pipeline
       steps
       {
         sh '''
-        sudo docker container rm -f web || true
-        sudo docker container run -d --name web --net appnet -p 8282:80 -v /projects/devops-bgapp/web:/var/www/html:ro img-bgapp-web
-        
-        sudo docker container rm -f db || true
-        sudo docker container run -d --name db --net appnet -e MYSQL_ROOT_PASSWORD=12345 img-bgapp-db
+        sudo docker container rm -f ${DO_WEB_CONTAINER} || true
+        sudo docker container run -d --name ${DO_WEB_CONTAINER} --net ${NETWORK_NAME} -p ${DO_WEB_PORT_FORWARDING} -v ${DO_WEB_VOLUME} ${DO_IMG_WEB}
+
+        sudo docker container rm -f ${DO_DB_CONTAINER} || true
+        sudo docker container run -d --name ${DO_DB_CONTAINER} --net ${NETWORK_NAME} -e ${DB_CONTAINER_ENV} ${DO_IMG_DB}
         '''
       }
     }
   }
-} 
+}

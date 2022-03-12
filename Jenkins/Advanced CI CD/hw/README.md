@@ -25,4 +25,28 @@ For the Jenkins part, try to automate it as much as possible. Ideally, there sho
 
 ### Tips for usage:
 1. Clone the repository, and create the machines - open a terminal and execute `vagrant up`
-2. 
+2. Preparation Jenkins UI
+    - Credentials (username: jenkins)
+        - Add Credentials Username with password
+        - Add Credentials SSH Username with private key (credentials from file), Enter directly - paste the contents of the private key file which can be extracted (on the jenkins machine) with
+`sudo cat /var/lib/jenkins/.ssh/id_rsa`
+    - Plugins
+        - SSH
+        - Blue Ocean
+        - gitea
+    - Hosts /Manage Jenkins => Configure System/ (SSH remote hosts / SSH sites)
+        - hostname: `jenkins.m5.hw`
+        - port: 22
+        - credentials: jenkins (Credentials from file) or jenkins (Local user with password)
+    - Slave Host /Manage Jenkins => Manage Nodes and Clouds => New Node/
+        - node name: docker-node
+        - Permanent Agent -> Create
+        - Set number of executors to 4
+        - Remote root dir: `/home/jenkins`
+        - Enter docker-node in Labels
+        - Usage: Only build jobs with label expression matching this node
+        - Launch method: Launch slave agents via SSH
+        - host: `docker.m5.hw`
+        - credentials: jenkins (Credentials from file)
+        - Host Key Verification Strategy: Known hosts file
+    - Jenkins CLI

@@ -4,6 +4,20 @@
 Vagrant.configure(2) do |config|
     
   config.ssh.insert_key = false
+  config.vm.define "docker" do |docker|
+    docker.vm.box="ivelin1936/VCentos"
+    docker.vm.hostname = "docker.m5.hw"
+    docker.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "3072"]
+      vb.name = "DOCKER_M5"
+    end
+    docker.vm.network "private_network", ip: "192.168.56.12"
+    docker.vm.provision "shell", path: "host_config.sh"
+    docker.vm.provision "shell", path: "docker-setup.sh"
+    docker.vm.provision "shell", path: "centos_firewall_setup.sh"
+    docker.vm.provision "shell", path: "add_user_do.sh"
+  end
+  
   config.vm.define "jenkins" do |jenkins|
     jenkins.vm.box="ivelin1936/VCentos"
     jenkins.vm.hostname = "jenkins.m5.hw"
@@ -17,20 +31,6 @@ Vagrant.configure(2) do |config|
     jenkins.vm.provision "shell", path: "centos_firewall_setup.sh"
     jenkins.vm.provision "shell", path: "jenkins-setup.sh"
     jenkins.vm.provision "shell", path: "additional_jenkins_settings.sh"
-  end
-  
-  config.vm.define "docker" do |docker|
-    docker.vm.box="ivelin1936/VCentos"
-    docker.vm.hostname = "docker.m5.hw"
-    docker.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "3072"]
-      vb.name = "DOCKER_M5"
-    end
-    docker.vm.network "private_network", ip: "192.168.56.12"
-    docker.vm.provision "shell", path: "host_config.sh"
-    docker.vm.provision "shell", path: "docker-setup.sh"
-    docker.vm.provision "shell", path: "centos_firewall_setup.sh"
-    docker.vm.provision "shell", path: "add_user_do.sh"
   end
   
 end

@@ -29,3 +29,17 @@ while true ; do
         break
     fi
 done
+
+echo "### Chnage jenkins user password..."
+#sudo su - jenkins
+sudo chpasswd <<<"jenkins:Password1"
+echo "### Generate a public/private key pair, for the jenkins user..."
+echo | ssh-keygen -t rsa -m PEM -P '' -C jenkins@jenkins.m5.hw
+JENKINS_SSH_DIR="/var/lib/jenkins/.ssh"
+[ -d $JENKINS_SSH_DIR ] || sudo mkdir $JENKINS_SSH_DIR && echo "Directory '$JENKINS_SSH_DIR' created."
+sudo cp /root/.ssh/id_rsa /var/lib/jenkins/.ssh/ && sudo cp /root/.ssh/id_rsa.pub /var/lib/jenkins/.ssh/
+sudo rm /root/.ssh/id_rsa && sudo rm /root/.ssh/id_rsa.pub
+echo "### Copy the SSH key to the jenkins machine..."
+sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@jenkins.m5.hw || true
+echo "### Copy the SSH key to the docker machine..."
+sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@docker.m5.hw || true

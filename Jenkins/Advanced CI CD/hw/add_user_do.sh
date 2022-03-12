@@ -15,15 +15,10 @@ else
 	echo "Only root may add a user to the system."
 	exit 2
 fi 
+sudo chpasswd <<<"$USERNAME:$PASSWORD"
 
 echo "### Adding the $USERNAME user to the sudoers list..."
 sudo sh -c "echo \"$USERNAME ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
 
 echo "### Adding the $USERNAME user to the docker group..."
 sudo usermod -aG docker jenkins
-
-echo "### Switch to $USERNAME user, chnage it's password, generate a public/private key pair and copy the SSH key to the jenkins host machine..."
-sudo su - $USERNAME
-sudo chpasswd <<<"$USERNAME:$PASSWORD"
-echo | ssh-keygen -t rsa -m PEM -P ''
-sshpass -p "$PASSWORD" ssh-copy-id jenkins@jenkins.m5.hw

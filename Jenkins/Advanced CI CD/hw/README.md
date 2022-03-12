@@ -21,3 +21,8 @@ You are expected to create the following
             - Run the containers (the web container to publish port on 80)
 As usual, try to do the infrastructure part as automated as possible. Of course, using Vagrant
 For the Jenkins part, try to automate it as much as possible. Ideally, there should be a Jenkinsfile hosted in the repository from which you create the pipeline (try to use the CLI to automate this as well)
+
+
+### Tips for usage:
+1. Clone the repository, and create the machines - open a terminal and execute `vagrant up`
+2. 

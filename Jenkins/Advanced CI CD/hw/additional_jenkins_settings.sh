@@ -13,12 +13,6 @@ JENKINS_USER=$(cat /etc/passwd | grep jenkins)
 echo "### Adding the jenkins user to the sudoers list..."
 sudo sh -c "echo \"jenkins ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
 
-echo "### Switch to jenkins user, chnage it's password, generate a public/private key pair and copy the SSH key to the jenkins host machine..."
-sudo su - jenkins
-sudo chpasswd <<<"jenkins:Password1"
-echo | ssh-keygen -t rsa -m PEM -P ''
-sshpass -p "Password1" ssh-copy-id jenkins@localhost
-
 echo "### Disabling Jenkins security to prevent unlocking..."
 sudo sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/g' /var/lib/jenkins/config.xml
 sudo ex +g/useSecurity/d +g/authorizationStrategy/d -scwq /var/lib/jenkins/config.xml

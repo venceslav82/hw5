@@ -71,5 +71,7 @@ For the Jenkins part, try to automate it as much as possible. Ideally, there sho
         - Set Gitea Base URL to http://192.168.56.12:3000/
         - Create an account
         - Create a "bgapp" repository clone from `https://github.com/ivelin1936/devops-bgapp.git`
+        - Add repository webhook 
+            - Target URL `http://192.168.56.11:8080/gitea-webhook/post`
         
             

@@ -22,3 +22,15 @@ sudo sh -c "echo \"$USERNAME ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
 
 echo "### Adding the $USERNAME user to the docker group..."
 sudo usermod -aG docker jenkins
+
+
+sudo systemctl restart docker
+echo "### Checking docker deamon status..."
+while true ; do
+    sleep 5
+    if [ "$(systemctl is-active docker)" = "active" ]; then 
+        echo "Docker deamon is up! Checking status..."
+        systemctl status docker
+        break
+    fi
+done

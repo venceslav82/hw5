@@ -33,13 +33,26 @@ done
 echo "### Chnage jenkins user password..."
 #sudo su - jenkins
 sudo chpasswd <<<"jenkins:Password1"
-echo "### Generate a public/private key pair, for the jenkins user..."
-echo | ssh-keygen -t rsa -m PEM -P '' -C jenkins@jenkins.m5.hw
-JENKINS_SSH_DIR="/var/lib/jenkins/.ssh"
-[ -d $JENKINS_SSH_DIR ] || sudo mkdir $JENKINS_SSH_DIR && echo "Directory '$JENKINS_SSH_DIR' created."
-sudo cp /root/.ssh/id_rsa /var/lib/jenkins/.ssh/ && sudo cp /root/.ssh/id_rsa.pub /var/lib/jenkins/.ssh/
-sudo rm /root/.ssh/id_rsa && sudo rm /root/.ssh/id_rsa.pub
-echo "### Copy the SSH key to the jenkins machine..."
-sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@jenkins.m5.hw || true
-echo "### Copy the SSH key to the docker machine..."
-sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@docker.m5.hw || true
+
+#FIXME...
+#echo "### Generate a public/private key pair, for the jenkins user..."
+#echo | ssh-keygen -t rsa -m PEM -P '' -C jenkins@jenkins.m5.hw
+#JENKINS_SSH_DIR="/var/lib/jenkins/.ssh"
+#$[ -d $JENKINS_SSH_DIR ] || sudo mkdir $JENKINS_SSH_DIR && echo "Directory '$JENKINS_SSH_DIR' created."
+#sudo cp /root/.ssh/id_rsa /var/lib/jenkins/.ssh/ && sudo cp /root/.ssh/id_rsa.pub /var/lib/jenkins/.ssh/
+#sudo rm /root/.ssh/id_rsa && sudo rm /root/.ssh/id_rsa.pub
+#sudo chown jenkins:jenkins /var/lib/jenkins/.ssh/id_rsa && sudo chown jenkins:jenkins /var/lib/jenkins/.ssh/id_rsa.pub
+#sudo chmod 400 /var/lib/jenkins/.ssh/id_rsa && chmod 400 id_rsa.pub
+#echo "### Copy the SSH key to the jenkins machine..."
+#sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@jenkins.m5.hw || true
+#echo "### Copy the SSH key to the docker machine..."
+#sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@docker.m5.hw || true
+
+echo "### Download Jenkins CLI .jar..."
+wget http://192.168.56.11:8080/jnlpJars/jenkins-cli.jar
+
+
+
+
+
+

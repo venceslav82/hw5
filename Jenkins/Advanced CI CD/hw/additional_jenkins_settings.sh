@@ -48,8 +48,10 @@ sudo chpasswd <<<"jenkins:Password1"
 #echo "### Copy the SSH key to the docker machine..."
 #sudo sshpass -p "Password1" ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub jenkins@docker.m5.hw || true
 
+HOSTNAME_IP=$(hostname -i | awk '{print $2}')
+    [ -z "$HOSTNAME_IP" ] && HOSTNAME_IP=$(hostname -i | awk '{print $1}')
 echo "### Download Jenkins CLI .jar..."
-wget http://192.168.56.11:8080/jnlpJars/jenkins-cli.jar
+wget http://$HOSTNAME_IP:8080/jnlpJars/jenkins-cli.jar || true
 
 
 

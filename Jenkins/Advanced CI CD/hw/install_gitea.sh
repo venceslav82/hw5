@@ -1,13 +1,18 @@
 #!/bin/bash
 
-test -f /node/docker-compose.yml && DOCKER_COMPOSE_FILE=/node/docker-compose.yml || DOCKER_COMPOSE_FILE=/node/docker-compose.yaml
+SHARED_FOLDER=/node
+DOCKER_COMPOSE_FILE=docker-compose.yml
+test -f $SHARED_FOLDER/$DOCKER_COMPOSE_FILE || DOCKER_COMPOSE_FILE=docker-compose.yaml
 
-if [ test -f $DOCKER_COMPOSE_FILE ]; then
+if [ -f $SHARED_FOLDER/$DOCKER_COMPOSE_FILE ]; then
     echo "::::: '$DOCKER_COMPOSE_FILE' file found... Deploying Gitea..."
-    cp $DOCKER_COMPOSE_FILE .
+    cp $SHARED_FOLDER/$DOCKER_COMPOSE_FILE . && sudo chown vagrant:vagrant $DOCKER_COMPOSE_FILE
     docker compose up -d
-    echo "Gitea deployed sucessfully on http://192.168.56.12:3000"
+
+    HOSTNAME_IP=$(hostname -i | awk '{print $2}')
+    [ -z "$HOSTNAME_IP" ] && HOSTNAME_IP=$(hostname -i | awk '{print $1}')
+    echo "Gitea deployed sucessfully on http://$HOSTNAME_IP:3000"
 else 
-    echo "There is no docker compose yaml file found at destination '$DOCKER_COMPOSE_FILE'...."
+    echo "There is no docker compose yaml file found at destination '$SHARED_FOLDER/$DOCKER_COMPOSE_FILE'...."
 fi
 

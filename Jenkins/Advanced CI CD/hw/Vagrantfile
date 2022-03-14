@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
       vb.name = "DOCKER_M5"
     end
     docker.vm.network "private_network", ip: "192.168.56.12"
-    docker.vm.network "forwarded_port", guest: 8080, host: 8080
+    #docker.vm.network "forwarded_port", guest: 8080, host: 8080
     docker.vm.synced_folder ".", "/node"
     docker.vm.provision "shell", path: "host_config.sh"
     docker.vm.provision "shell", path: "docker-setup.sh"

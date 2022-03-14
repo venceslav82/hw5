@@ -23,6 +23,9 @@ services:
       - GITEA__database__USER=gitea
       - GITEA__database__PASSWD=gitea
       - GITEA__webhook__ALLOWED_HOST_LIST=192.168.56.0/24
+      - GITEA__repository__ENABLE_PUSH_CREATE_USER=true
+      - GITEA__repository__ENABLE_PUSH_CREATE_ORG=true
+      - GITEA__repository__ONLY_ALLOW_PUSH_IF_GITEA_ENVIRONMENT_SET=false
     restart: always
     networks:
       - gitea

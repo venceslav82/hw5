@@ -2,7 +2,7 @@
 
 echo Source repo:
 read FROM_URL
-[ -z "$FROM_URL" ] && FROM_URL=https://github.com/shekeriev/bgapp.git
+[ -z "$FROM_URL" ] && FROM_URL=https://github.com/ivelin1936/devops-bgapp.git
 
 echo Username:
 read USERNAME

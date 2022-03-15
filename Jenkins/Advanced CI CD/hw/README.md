@@ -70,8 +70,7 @@ For the Jenkins part, try to automate it as much as possible. Ideally, there sho
         - Set Server Domain to 192.168.56.12
         - Set Gitea Base URL to http://192.168.56.12:3000/
         - Create an account
-        - Create a "bgapp" repository clone from `https://github.com/ivelin1936/devops-bgapp.git`
-        - Add repository webhook 
+    - Execute `./clone_repo.sh` from the docker machine
+        - Add repository webhook (in gitea UI)
             - Target URL `http://192.168.56.11:8080/gitea-webhook/post`
-        
-            
+        - Make repository Visibility public (unmark 'Make repository Private' from repository settings) 

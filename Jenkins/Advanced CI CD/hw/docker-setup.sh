@@ -34,7 +34,7 @@ while true ; do
     fi
 done
 
-echo "### Installing Docker Compose..."
+echo "### Installing Docker Compose v2..."
 #mkdir -p /home/vagrant/.docker/cli-plugins/
 #curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o /home/vagrant/.docker/cli-plugins/docker-compose
 #chmod +x /home/vagrant/.docker/cli-plugins/docker-compose
@@ -42,4 +42,7 @@ echo "### Installing Docker Compose..."
 mkdir -p ~/.docker/cli-plugins/
 curl -SL https://github.com/docker/compose/releases/download/v2.0.0-rc.3/docker-compose-linux-amd64 -o ~/.docker/cli-plugins/docker-compose
 chmod +x ~/.docker/cli-plugins/docker-compose
+
+echo "### Installing Docker Compose v1..."
+curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > /tmp/docker-compose && chmod +x /tmp/docker-compose && sudo cp /tmp/docker-compose /usr/local/bin/docker-compose
 

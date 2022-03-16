@@ -38,6 +38,7 @@ services:
       - "222:22"
     depends_on:
       - db
+    command: sh -c "/app/gitea/gitea admin create-user --name douser --password Password1 --email douser@m5.hw --admin"
   db:
     image: mysql:8
     restart: always

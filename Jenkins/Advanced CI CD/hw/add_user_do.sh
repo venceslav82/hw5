@@ -22,7 +22,7 @@ sudo sh -c "echo \"$USERNAME ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
 
 echo "### Adding the $USERNAME user to the docker group..."
 sudo usermod -aG docker jenkins
-
+#sudo usermod -aG root jenkins
 
 sudo systemctl restart docker
 echo "### Checking docker deamon status..."

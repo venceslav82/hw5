@@ -10,29 +10,30 @@ pipeline
   }
   stages 
   {
-    stage('Clone') 
+    stage('Clone Repo')
     {
-      steps 
+      steps
       {
         git branch: 'master', url: 'http://192.168.56.12:3000/douser/devops-bgapp.git'
       }
     }
-    stage('Build')
+    stage('Prepare volumes')
     {
       steps
       {
-        sh 'docker image build -t img-calc .'
+        sh 'sudo rm -r /home/vagrant/web || true'
+        sh 'sudo cp -r web /home/vagrant/web'
+      }
+    }
+    stage('Run Application')
+    {
+      steps
+      {
+        sh 'docker-compose -f docker-compose.yaml down || true'
+        sh 'docker-compose -f docker-compose.yaml up -d'
+      }
+    }
 
-      }
-    }
-    stage('Run')
-    {
-      steps
-      {
-        sh 'docker compose -f docker-compose.yaml down || true'
-        sh 'docker compose -f docker-compose.yaml up -d'
-      }
-    }
     stage('Test')
     {
       steps
@@ -47,6 +48,7 @@ pipeline
         }
       }
     }
+
     stage('Login Docker Hub') 
     {
       steps 
@@ -54,6 +56,7 @@ pipeline
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
+
     stage('Push to Docker Hub') 
     {
       steps 
@@ -63,6 +66,7 @@ pipeline
       }
     }
   }
+
   post 
   { 
     always 

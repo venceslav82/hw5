@@ -14,7 +14,7 @@ pipeline
     {
       steps
       {
-        git branch: 'master', url: 'http://192.168.56.12:3000/douser/devops-bgapp.git'
+        git branch: 'master', url: 'http://192.168.99.12:3000/douser/devops-bgapp.git'
       }
     }
     stage('Prepare volumes')
@@ -61,8 +61,8 @@ pipeline
     {
       steps 
       {
-        sh 'docker image tag img-calc ivelin1936/supercalc'
-        sh 'docker push ivelin1936/supercalc'
+        sh 'docker image tag img-calc venceslav82/supercalc'
+        sh 'docker push venceslav82/supercalc'
       }
     }
   }
